@@ -1,2 +1,18 @@
-<button mat-raised-button color="primary">Click me!</button>
-<router-outlet></router-outlet>
+<mat-sidenav-container class="main-container">
+  <mat-sidenav mode="side"
+               [opened]="navBarOpen">
+    <mat-nav-list>
+      <a *ngFor="let route of routes" mat-list-item [routerLink]="route.route">
+        <fpa-margin-icon [iconName]="route.icon"></fpa-margin-icon> {{route.title}}
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <fpa-toolbar (navToggle)="toggleNav()">
+
+    </fpa-toolbar>
+    <div style="margin-left: 10px">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
