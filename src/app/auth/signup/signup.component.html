@@ -6,13 +6,27 @@
     <mat-card-content>
       <form (ngSubmit)="signUp()" [formGroup]="signUpForm" novalidate fxLayout="column">
         <mat-form-field>
-          <input matInput placeholder="Email" formControlName="email">
+          <input matInput
+                 placeholder="Email"
+                 formControlName="email">
+          <mat-error *ngIf="fcErr('email', 'required')">
+            Email required
+          </mat-error>
+          <mat-error *ngIf="fcErr('email', 'email', ['required'])">
+            Email is invalid
+          </mat-error>
         </mat-form-field>
         <mat-form-field fxFlex>
-          <input matInput placeholder="Password" type="password" formControlName="password">
+          <input matInput
+                 placeholder="Password"
+                 type="password"
+                 formControlName="password">
         </mat-form-field>
         <mat-form-field fxFlex>
-          <input matInput placeholder="Repeat Password" type="password" formControlName="repeatPassword">
+          <input matInput
+                 placeholder="Repeat Password"
+                 type="password"
+                 formControlName="repeatPassword">
         </mat-form-field>
         <button mat-button
                 color="accent"
