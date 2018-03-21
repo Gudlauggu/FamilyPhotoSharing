@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 import { AuthService } from '../shared/auth.service';
+import { matchPassword } from '../shared/password-validator';
+import { User } from '../shared/user';
 
 @Component({
   selector: 'fpa-signup',
@@ -19,8 +21,8 @@ export class SignupComponent implements OnInit {
               private authService: AuthService) {
     this.signUpForm = fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]],
-      repeatPassword: ['', [Validators.required]]
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      repeatPassword: ['', [Validators.required, matchPassword()]]
     });
   }
   
@@ -29,8 +31,8 @@ export class SignupComponent implements OnInit {
   
   signUp() {
     
-    const signUpModel = this.signUpForm.value;
-    this.authService.signup(signUpModel.email, signUpModel.password)
+    const signUpModel = this.signUpForm.value as User;
+    this.authService.signup(signUpModel)
       .then(user => {
         this.router.navigateByUrl('albums')
           .then(() => {
@@ -46,8 +48,15 @@ export class SignupComponent implements OnInit {
       });
   }
   
-  fcErr(fc: string, error: string): boolean {
-    return this.signUpForm.get('fc').hasError(error);
+  fcErr(fc: string, error: string, pre?: string[]): boolean {
+    if (pre && pre.length > 0) {
+      for (let i = 0; i < pre.length; i++) {
+        if (this.signUpForm.get(fc).hasError(pre[i])) {
+         return false;
+        }
+      }
+    }
+    return this.signUpForm.get(fc).hasError(error);
   }
 }
 
