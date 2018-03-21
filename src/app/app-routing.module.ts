@@ -7,12 +7,16 @@ import { AuthModule } from './auth/auth.module';
 import { AuthGuard } from './auth/shared/auth-guard.service';
 import { SignupComponent } from './auth/signup/signup.component';
 import { LoggedInGuard } from './auth/shared/logged-in.guard';
+import { ProfileComponent } from './auth/profile/profile.component';
 
 const routes: Routes = [
   { path: 'albums', component: AlbumsListComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent, canActivate: [LoggedInGuard] },
-  { path: 'signup', component: SignupComponent, canActivate: [LoggedInGuard] }
-];
+  { path: 'signup', component: SignupComponent, canActivate: [LoggedInGuard] },
+  { path: '', redirectTo: '/albums', pathMatch: 'full'},
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] }
+  
+  ];
 
 @NgModule({
   imports: [
